@@ -17,7 +17,7 @@ class RTVBag(Document):
 		from frappe.types import DF
 
 		bag_no: DF.Data
-		customer: DF.Data
+		customer: DF.Link
 		items: DF.Table[RTVBagItem]
 		scan_barcode: DF.Data | None
 	# end: auto-generated types
