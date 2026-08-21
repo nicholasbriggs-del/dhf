@@ -17,7 +17,7 @@ class RTVBag(Document):
 		from frappe.types import DF
 
 		bag_no: DF.Data
-		customer: DF.Link
+		customer: DF.Data
 		items: DF.Table[RTVBagItem]
 		scan_barcode: DF.Data | None
 	# end: auto-generated types
@@ -28,10 +28,11 @@ class RTVBag(Document):
 
 	def validate_duplicate_bag_no(self):
 		"""Bag No is manually entered and must be unique across RTV Bags."""
-		duplicate = frappe.db.exists(
-			"RTV Bag",
-			{"bag_no": self.bag_no, "name": ("!=", self.name)},
-		)
+		filters = {"bag_no": self.bag_no}
+		if not self.is_new():
+			filters["name"] = ("!=", self.name)
+
+		duplicate = frappe.db.exists("RTV Bag", filters)
 		if duplicate:
 			frappe.throw(
 				_("Bag No {0} is already used in RTV Bag {1}. Please enter a different Bag No.").format(

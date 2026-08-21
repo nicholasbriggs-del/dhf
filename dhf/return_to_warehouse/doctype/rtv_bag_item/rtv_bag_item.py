@@ -14,7 +14,9 @@ class RTVBagItem(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
+		ean_code: DF.Data
 		item_code: DF.Link
+		item_name: DF.Data | None
 		qty: DF.Float
 	# end: auto-generated types
 
